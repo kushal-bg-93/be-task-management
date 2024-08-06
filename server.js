@@ -2,12 +2,14 @@ const express=require('express')
 const app=express();
 const mongoose = require('mongoose')
 const helmet=require('helmet')
+const routes=require('./routes/index-route')
 
 require('dotenv').config()
 
 app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+app.use(routes)
 
 mongoose.set('debug',true)
 
