@@ -28,7 +28,7 @@ const auth={
 
             const token=await generateToken({email:user?.email,role:user?.role,name:user?.name})
 
-            return successResponse(req,res,{message:successMessages?.loginSuccess,token:token,role:user?.role})
+            return successResponse(req,res,{message:successMessages?.loginSuccess,token:token,role:user?.role,_id:user?._id})
 
         } catch (error) {
             console.log('Error occured in login ',error?.message)

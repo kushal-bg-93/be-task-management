@@ -25,7 +25,7 @@ const taskSchema=new mongoose.Schema({
             type:Boolean,
             default:false
         },
-        taskId:{
+        taskId:{ //parent task id
             type:mongoose.Schema.Types.ObjectId
         }
     },

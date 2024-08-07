@@ -14,7 +14,8 @@ const messages={
         userDoesntExist:"User not found",
         tokenRequired:"token required",
         invalidCredentials:"Invalid credentials",
-        unauthorisedAccess:"Unauthorised Access"
+        unauthorisedAccess:"Unauthorised Access",
+        notFound:"Not found"
     }
 }
 

@@ -22,7 +22,7 @@ const validateToken = async (req, res, next) => {
         query={email:email}
     }else{
         collection='User'
-        project={email:1,role:1}
+        project={email:1,role:1,projectId:1}
         query={email:email}
     }
 
@@ -51,8 +51,10 @@ const validateToken = async (req, res, next) => {
     req.bothUserData = {
         _id:findUser?._id,
         email: findUser?.email,
-        role: findUser?.role
+        role: findUser?.role,
+        projectId:findUser?.projectId??[]
     }
+
 
     next();
 }
