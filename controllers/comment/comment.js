@@ -4,7 +4,7 @@ const {insertOne,findOne,pagination, find}=require('../../models/query/commonQue
 const mongoose = require("mongoose")
 const ejs=require('ejs')
 const sendMail=require('../../utils/sendEmail')
-
+const socket=require('../../socket')
 const comment={
     createComment:async(req,res)=>{
         try {
@@ -39,7 +39,7 @@ const comment={
             let emailData=await sendMail(`TaskO : New comment on ${taskId}`,template,emails)
 
             console.log('this is email data>>',emailData)
-            // req.io.emit('newComment',insertComment)
+            socket.getIo().emit('newComment',insertComment)
 
             return successResponse(req,res,{message:successMessages?.commentedSuccess,data:insertComment})
 
