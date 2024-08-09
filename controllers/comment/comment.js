@@ -1,6 +1,6 @@
 const {notFoundError,internalError,successResponse}=require("../../utils/response")
 const {successMessages,errorMessages}=require('../../utils/messages')
-const {insertOne,findOne,pagination}=require('../../models/query/commonQuery')
+const {insertOne,findOne,pagination, find}=require('../../models/query/commonQuery')
 const mongoose = require("mongoose")
 const ejs=require('ejs')
 const sendMail=require('../../utils/sendEmail')
@@ -8,27 +8,41 @@ const sendMail=require('../../utils/sendEmail')
 const comment={
     createComment:async(req,res)=>{
         try {
-            const {comment,taskId,mentions}=req?.body
+            const {comment,taskId}=req?.body
+            let emails
+
+            // res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+            // res.header('Access-Control-Allow-Methods', 'GET, POST');
+            // res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+            const getTask=await findOne('Task',{_id:new mongoose.Types.ObjectId(taskId)},{assignedTo:1,title:1 })
+
+            if(getTask?.assignedTo?.length){
+                const getUserEmails=await find('User',{_id:{$in:getTask?.assignedTo}},{email:1})
+
+                emails=getUserEmails.map(user=>user?.email)
+            }
 
             const insertData={
                 comment:comment,
                 commentBy:req?.bothUserData?._id,
                 email:req?.bothUserData?.email,
-                taskId:taskId,
-                mentions:mentions
+                taskId:taskId
             }
 
             const insertComment=await insertOne('Comment',insertData)
 
-            const content=`${req?.bothUserData?.email} has mentioned you on task:${taskId}`
+            const content=`${req?.bothUserData?.email} has commented on:${taskId} : ${getTask?.title}`
 
             const template=await ejs.renderFile('././views/emailCommentTemplate.ejs',{content})
 
-            let emailData=await sendMail('Task management : Some one mentioned you',template,mentions)
+            let emailData=await sendMail(`TaskO : New comment on ${taskId}`,template,emails)
 
             console.log('this is email data>>',emailData)
+            // req.io.emit('newComment',insertComment)
 
             return successResponse(req,res,{message:successMessages?.commentedSuccess,data:insertComment})
+
             
         } catch (error) {
             console.log(error)

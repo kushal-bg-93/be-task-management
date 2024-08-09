@@ -25,6 +25,13 @@ const task={
                 }
             }
 
+            if(filterData?.projectId){
+                searchQuery={
+                    ...searchQuery,
+                    projectId:new mongoose.Types.ObjectId(filterData?.projectId)
+                }
+            }
+
             if(filterData?.completed){
                 searchQuery={
                     ...searchQuery,

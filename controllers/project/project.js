@@ -8,7 +8,7 @@ const project={
         try {
             const projects=await find('Project',{$or:[{_id:{$in:req?.bothUserData?.projectId}},{projectOwner:new mongoose.Types.ObjectId(req?.bothUserData?._id)}]})
 
-            if(!projects.length) return notFoundError(req,res,errorMessages.notFound)
+            if(!projects.length) {return notFoundError(req,res,errorMessages.notFound)}
 
                 return successResponse(req,res,{data:projects})
         } catch (error) {

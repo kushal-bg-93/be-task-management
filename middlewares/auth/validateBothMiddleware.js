@@ -7,7 +7,7 @@ const validateToken = async (req, res, next) => {
 
     let project,query,collection
 
-    if (!req?.headers?.authorization) notFoundError(req, res, errorMessages?.tokenRequired)
+    if (!req?.headers?.authorization) return notFoundError(req, res, errorMessages?.tokenRequired)
 
     const extractedData = await verifyToken(req?.headers?.authorization)
 

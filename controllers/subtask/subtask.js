@@ -49,10 +49,11 @@ const subtask={
     viewSubtask:async(req,res)=>{
         try {
             const {taskId}=req?.query
+            // let search={'subtask.status':false}
+            // if(subtask=='true') search={'subtask.status':true}
+            const task=await findOne('Task',{_id:new mongoose.Types.ObjectId(taskId)})
 
-            const task=await findOne('Task',{_id:new mongoose.Types.ObjectId(taskId),'subtask.status':true})
-
-            if(!task) return notFoundError(req,res,errorMessages?.notFound)
+            if(!task){ return notFoundError(req,res,errorMessages?.notFound)}
 
             return successResponse(req,res,{data:task})
         } catch (error) {

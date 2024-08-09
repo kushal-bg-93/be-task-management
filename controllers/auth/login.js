@@ -24,7 +24,7 @@ const auth={
 
             const decryptPassword=await decryptData(user?.password)
             
-            if(decryptPassword!==password) notFoundError(req,res,errorMessages?.invalidCredentials)
+            if(decryptPassword!==password) return notFoundError(req,res,errorMessages?.invalidCredentials)
 
             const token=await generateToken({email:user?.email,role:user?.role,name:user?.name})
 
