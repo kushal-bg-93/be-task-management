@@ -2,6 +2,8 @@ const {notFoundError,internalError,successResponse}=require("../../utils/respons
 const {successMessages,errorMessages}=require('../../utils/messages')
 const {insertOne,findOne,find}=require('../../models/query/commonQuery')
 const mongoose=require('mongoose')
+const socket=require('../../socket')
+
 
 const subtask={
     createSubtask:async(req,res)=>{
@@ -24,6 +26,10 @@ const subtask={
         }
 
         const insertSubtask=await insertOne('Task',insertData)
+
+        console.log('This is insertSubTask',insertSubtask)
+        socket.getIo().emit(`newSubtask:${parentTaskId}`,insertSubtask)
+
 
         return successResponse(req,res,{message:successMessages?.taskCreatedSuccess,data:insertSubtask})
 

@@ -38,8 +38,8 @@ const comment={
 
             let emailData=await sendMail(`TaskO : New comment on ${taskId}`,template,emails)
 
-            console.log('this is email data>>',emailData)
-            socket.getIo().emit('newComment',insertComment)
+            // console.log('this is email data>>',emailData)
+            socket.getIo().emit(`newComment:${taskId}`,insertComment)
 
             return successResponse(req,res,{message:successMessages?.commentedSuccess,data:insertComment})
 

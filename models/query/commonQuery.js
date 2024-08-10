@@ -57,6 +57,16 @@ const query={
         const totalDocs=await model.countDocuments(query)
 
         return {result:results,pageData:{total:totalDocs,pageSize:limit,skip:skip}}
+    },
+    updateOne:async(collection,query,setData)=>{
+        try {
+            const model=require(`../schema/${collection}`)
+            const updateData=await model.updateOne(query,{$set:setData})
+
+            return updateData
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 
