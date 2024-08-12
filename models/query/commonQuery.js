@@ -1,3 +1,4 @@
+
 const query={
 
     findOne:async(collection,data={},project={})=>{
@@ -66,6 +67,20 @@ const query={
             return updateData
         } catch (error) {
             console.log(error)
+        }
+    },
+    search:async(collection,searchField,searchTerm,project={},searchQuery={})=>{
+        try {
+            let projection={...project}
+            projection[searchField]=1
+            let model=require(`../schema/${collection}`)
+            let query={}
+            query[searchField]={$regex:searchTerm,$options:'i'}
+            let searchResults=await model.find(query,projection)
+            return searchResults
+        } catch (error) {
+            console.log(error)
+            
         }
     }
 }

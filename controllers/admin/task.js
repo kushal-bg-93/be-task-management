@@ -14,6 +14,7 @@ const task={
 
             console.log('data are =>',req.body)
             // let assignedToDecoded=decodeURIComponent(assignedTo).split(',')
+            let assignedToArr=assignedTo.split(",")
 
 
             let subtaskParsed=decodeURIComponent(subtask)
@@ -26,7 +27,7 @@ const task={
             title:title,
             description:description,
             createdBy:req?.adminData?._id,
-            assignedTo:[assignedTo],
+            assignedTo:assignedToArr,
             subtask:subtaskParsed,
             projectId:projectId,
             priority:priority,
