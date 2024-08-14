@@ -12,7 +12,7 @@ const sendEmail=async(sub,body,to,cc,attachments)=>{
         }
       })
       const mailOptions = {
-        from: process.env.EMAIL,
+        from: "Tasko! Task Management",
         to: to,
         cc:cc,
         subject: sub,

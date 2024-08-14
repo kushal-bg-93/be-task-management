@@ -3,6 +3,9 @@ const {successMessages,errorMessages}=require('../../utils/messages')
 const {insertOne,findOne,find, pagination,pushOne}=require('../../models/query/commonQuery')
 const moment=require('moment')
 const mongoose = require('mongoose')
+const socket=require('../../socket')
+const ejs=require('ejs')
+const sendEmail = require('../../utils/sendEmail')
 
 const task={
     createTask:async(req,res)=>{
@@ -72,11 +75,36 @@ const task={
         try {
             const {taskId,userId}=req?.body
 
+            const findIfUserAdded=await findOne("Task",{_id:new mongoose.Types.ObjectId(taskId),assignedTo:new mongoose.Types.ObjectId(userId)},{_id:1,title:1})
+
+
+            if(findIfUserAdded?._id) return notFoundError(req,res,errorMessages?.alreadyExists)
+
             const updateData=await pushOne('Task',{_id:new mongoose.Types.ObjectId(taskId)},{assignedTo:new mongoose.Types.ObjectId(userId)})
 
             if(updateData?.acknowledged && updateData?.modifiedCount==1){
+                const userMail=await findOne('User',{_id:new mongoose.Types.ObjectId(userId)},{email:1})
+
+                const findUser=await findOne('Task',{_id:new mongoose.Types.ObjectId(taskId)},{assignedTo:1,title:1})
+                
+
+                socket.getIo().emit(`newAssignedToUser:${taskId}`,findUser)
+
+                const content=`${req?.bothUserData?.email} has assigined you a task ID:${taskId} : <h3>${findUser?.title}</h3>`
+
+            const template=await ejs.renderFile('././views/emailCommentTemplate.ejs',{content})
+
+            let emailData=await sendEmail(`TaskO : New Task Assignment ${taskId}`,template,userMail?.email)
+
                 return successResponse(req,res,successMessages?.success)
             }
+
+        
+
+            return notFoundError(req,res,errorMessages?.wentWrong)
+            // if(updateData?.acknowledged && updateData?.modifiedCount==1){
+            //     return successResponse(req,res,successMessages?.success)
+            // }
 
             
         } catch (error) {

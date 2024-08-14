@@ -15,7 +15,8 @@ const messages={
         tokenRequired:"token required",
         invalidCredentials:"Invalid credentials",
         unauthorisedAccess:"Unauthorised Access",
-        notFound:"Not found"
+        notFound:"Not found",
+        alreadyExists:"Already Exists"
     }
 }
 

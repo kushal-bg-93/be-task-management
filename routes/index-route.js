@@ -11,6 +11,7 @@ app.use(main+"/common",require('./common/comment'))
 app.use(main+"/common-subtask",require('./common/subtask'))
 app.use(main+"/common-tasks",require('./common/task'))
 app.use(main+"/common-projects",require('./common/project'))
+app.use(main+"/common-user",require('./common/user'))
 
 // app.use(main+"/admin/auth",require('./admin/adminAuth'))
 // app.use(main+"/admin/",require("./admin/addRestraunt"))

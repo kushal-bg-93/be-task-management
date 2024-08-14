@@ -8,6 +8,6 @@ router.post('/create-task',validateAdminJwtToken,fileUpload.array("attachments",
 
 router.get('/view-tasks',validateAdminJwtToken,viewTask)
 
-router.post('/assign-task',validateBothJwtToken,assignTask)
+
 
 module.exports=router
