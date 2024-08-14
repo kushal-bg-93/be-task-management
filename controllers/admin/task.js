@@ -1,6 +1,6 @@
 const {notFoundError,successResponse,internalError}=require('../../utils/response')
 const {successMessages,errorMessages}=require('../../utils/messages')
-const {insertOne,findOne,find, pagination}=require('../../models/query/commonQuery')
+const {insertOne,findOne,find, pagination,pushOne}=require('../../models/query/commonQuery')
 const moment=require('moment')
 const mongoose = require('mongoose')
 
@@ -65,6 +65,23 @@ const task={
         } catch (error) {
             console.log(error)
             return internalError(req,res,error.message)
+            
+        }
+    },
+    assignTask:async(req,res)=>{
+        try {
+            const {taskId,userId}=req?.body
+
+            const updateData=await pushOne('Task',{_id:new mongoose.Types.ObjectId(taskId)},{assignedTo:new mongoose.Types.ObjectId(userId)})
+
+            if(updateData?.acknowledged && updateData?.modifiedCount==1){
+                return successResponse(req,res,successMessages?.success)
+            }
+
+            
+        } catch (error) {
+            console.log(error)
+            return internalError(req,res,error?.message)
             
         }
     }

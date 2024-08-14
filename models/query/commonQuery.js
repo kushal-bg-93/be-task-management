@@ -82,6 +82,17 @@ const query={
             console.log(error)
             
         }
+    },
+    pushOne:async(collection,query,updateData)=>{
+        try {
+            const model=require(`../schema/${collection}`)
+            const updateData=await model.updateOne(query,{$push:updateData})
+            return updateData;
+        } catch (error) {
+            console.log(error)
+            
+        }
+        
     }
 }
 
